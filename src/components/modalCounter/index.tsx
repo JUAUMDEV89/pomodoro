@@ -3,26 +3,37 @@ import { ContainerModal } from './style';
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import { Counter } from '../counter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export function ModalCounter(){
+type sectionProps = {
+  section: 'setFocusTime' | 'setBreakTime'
+}
 
-    const [limitTime, setLimitTime] = useState(5);
+export function ModalCounter() {
 
-    return(
-        <ContainerModal>
-            <header>
-               <h4>Pomorest</h4>
+  const [section, setSection] = useState<sectionProps>({ section: 'setFocusTime' });
+  const [limitTime, setLimitTime] = useState(25);
+  
+  useEffect(()=>{
+      console.log('jsdhh')
+  }, [limitTime])
 
-               <AiFillCloseCircle />
-            </header>
-            <div className='main'>
-              <div className='buttons'>
-                <button onClick={()=>setLimitTime(limitTime + 1)}>+</button>
-                <button onClick={()=>setLimitTime(limitTime - 1)}>-</button>
-              </div>  
-              <Counter limitTime={limitTime} />
-            </div>
-        </ContainerModal>
-    )
+  return (
+    <ContainerModal>
+      <header>
+        <h4>Pomorest</h4>
+
+        <AiFillCloseCircle />
+      </header>
+      <div className='main'>
+        {section.section === 'setFocusTime' && (
+          <div className='buttons'>
+            <button onClick={() => setLimitTime(limitTime + 1)}>+</button>
+            <button onClick={() => setLimitTime(limitTime - 1)}>-</button>
+          </div>
+        )}
+        <Counter limitTimeCounter={limitTime} buttonValue={section.section === 'setFocusTime' ? 'next' : 'start'} />
+      </div>
+    </ContainerModal>
+  )
 }
